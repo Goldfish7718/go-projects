@@ -18,7 +18,7 @@ func main () {
 	fmt.Println("Enter 1st number")
 	fmt.Scanln(&input1)
 
-	fmt.Println("Enter 1st number")
+	fmt.Println("Enter 2nd number")
 	fmt.Scanln(&input2)
 
 	switch ch {
