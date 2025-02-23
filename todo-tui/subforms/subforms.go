@@ -38,6 +38,36 @@ func AddTask() (string, error) {
 	return task, nil
 }
 
+func EditTask(tasks []string) ([]string, error) {
+	if len(tasks) == 0 {
+		fmt.Println("No tasks to edit!")
+		return tasks, nil
+	}
+
+	var taskIndex int
+	options := make([]huh.Option[int], len(tasks))
+
+	for i, task := range tasks {
+		options[i] = huh.NewOption(fmt.Sprintf("%d %s", i+1, task), i)
+	}
+
+	if err := huh.NewSelect[int]().
+		Title("Select a to do to edit").
+		Options(options...).
+		Value(&taskIndex).Run(); err != nil {
+		return tasks, err
+	}
+
+	if err := huh.NewInput().
+		Title("Edit todo").
+		Value(&tasks[taskIndex]).Run(); err != nil {
+		return tasks, err
+	}
+
+	fmt.Println("Task edited succesfully")
+	return tasks, nil
+}
+
 func DeleteTask(tasks []string) ([]string, error) {
 	if len(tasks) == 0 {
 		fmt.Println("No tasks to delete!")
@@ -60,7 +90,6 @@ func DeleteTask(tasks []string) ([]string, error) {
 				Value(&taskIndex),
 		),
 		huh.NewGroup(
-
 			huh.NewConfirm().
 				Title("Are you sure you want to delete this todo?").
 				Affirmative("Yes").
