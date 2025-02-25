@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api-tester/subforms"
 	"log"
 
 	"github.com/charmbracelet/huh"
@@ -32,5 +33,13 @@ func main() {
 		),
 	).Run(); err != nil {
 		log.Fatal(err)
+	}
+
+	switch choice {
+	case "new":
+		subforms.RequestSubform(baseUrl)
+
+	case "exit":
+		return
 	}
 }
