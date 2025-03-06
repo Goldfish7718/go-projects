@@ -2,7 +2,6 @@ package subforms
 
 import (
 	"api-tester/utils"
-	"fmt"
 	"log"
 
 	"github.com/charmbracelet/huh"
@@ -32,6 +31,16 @@ func RequestSubform(baseUrl string) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s%s", baseUrl, route)
-	utils.Get(baseUrl + route)
+	completeUrl := baseUrl + route
+
+	switch requestType {
+	case "GET":
+		utils.Get(completeUrl)
+
+	case "DELETE":
+		utils.Delete(completeUrl)
+
+	case "POST":
+		utils.Post(completeUrl)
+	}
 }

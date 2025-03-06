@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	var baseUrl string
+	var baseUrl string = "http://localhost:3000"
 	var choice string
 
 	if err := huh.NewForm(
@@ -21,25 +21,27 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := huh.NewForm(
-		huh.NewGroup(
-			huh.NewSelect[string]().
-				Title("Select an action").
-				Options(
-					huh.NewOption("Make a new request", "new"),
-					huh.NewOption("Exit", "exit"),
-				).
-				Value(&choice),
-		),
-	).Run(); err != nil {
-		log.Fatal(err)
-	}
+	for {
+		if err := huh.NewForm(
+			huh.NewGroup(
+				huh.NewSelect[string]().
+					Title("Select an action").
+					Options(
+						huh.NewOption("Make a new request", "new"),
+						huh.NewOption("Exit", "exit"),
+					).
+					Value(&choice),
+			),
+		).Run(); err != nil {
+			log.Fatal(err)
+		}
 
-	switch choice {
-	case "new":
-		subforms.RequestSubform(baseUrl)
+		switch choice {
+		case "new":
+			subforms.RequestSubform(baseUrl)
 
-	case "exit":
-		return
+		case "exit":
+			return
+		}
 	}
 }
