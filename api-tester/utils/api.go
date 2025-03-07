@@ -68,11 +68,7 @@ func Post(url string) {
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading response:", err)
-		return
-	}
+	body := ParseResponseBody(resp)
 
 	fmt.Println("Response Status:", resp.Status)
 	fmt.Println("Response\n", string(body))
@@ -115,11 +111,7 @@ func Put(url string) {
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading response:", err)
-		return
-	}
+	body := ParseResponseBody(resp)
 
 	fmt.Println("Response Status:", resp.Status)
 	fmt.Println("Response\n", string(body))
@@ -141,11 +133,7 @@ func Delete(url string) {
 
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalf("Failed to send request: %v", err)
-		return
-	}
+	body := ParseResponseBody(resp)
 
 	// Print response
 	fmt.Println("Response Status:", resp.Status)

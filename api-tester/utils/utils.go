@@ -3,6 +3,9 @@ package utils
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
 	"os"
 
 	"github.com/chzyer/readline"
@@ -37,4 +40,13 @@ func AcceptRequestBody() *bytes.Buffer {
 
 	reqBody := bytes.NewBuffer([]byte(jsonStr))
 	return reqBody
+}
+
+func ParseResponseBody(resp *http.Response) string {
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("Error reading response: %v", err)
+	}
+
+	return string(body)
 }
