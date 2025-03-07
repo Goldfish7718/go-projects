@@ -37,10 +37,13 @@ func RequestSubform(baseUrl string) {
 	case "GET":
 		utils.Get(completeUrl)
 
-	case "DELETE":
-		utils.Delete(completeUrl)
-
 	case "POST":
 		utils.Post(completeUrl)
+
+	case "PUT":
+		utils.Put(completeUrl)
+
+	case "DELETE":
+		utils.Delete(completeUrl)
 	}
 }
