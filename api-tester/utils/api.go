@@ -6,13 +6,20 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/charmbracelet/huh"
 	"github.com/tidwall/pretty"
 )
 
 func Get(url string) {
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	s.Suffix = " Performing request..."
+	s.Start()
+
 	resp, err := http.Get(url)
+	s.Stop()
 
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -62,7 +69,12 @@ func Post(url string) {
 		reqBody = AcceptRequestBody()
 	}
 
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	s.Suffix = " Performing request..."
+	s.Start()
+
 	resp, err := http.Post(url, "application/json", reqBody)
+	s.Stop()
 	if err != nil {
 		log.Fatalf("Failed to send request: %v", err)
 	}
@@ -104,7 +116,13 @@ func Put(url string) {
 	req.Header.Set("Content-type", "application/json")
 
 	client := &http.Client{}
+
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	s.Suffix = " Performing request..."
+	s.Start()
+
 	resp, err := client.Do(req)
+	s.Stop()
 	if err != nil {
 		log.Fatalf("Failed to send request: %v", err)
 		return
@@ -125,7 +143,13 @@ func Delete(url string) {
 	}
 
 	client := &http.Client{}
+
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	s.Suffix = " Performing request..."
+	s.Start()
+
 	resp, err := client.Do(req)
+	s.Stop()
 	if err != nil {
 		log.Fatalf("Failed to send request: %v", err)
 		return
