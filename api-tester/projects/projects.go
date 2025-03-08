@@ -1,6 +1,7 @@
 package projects
 
 import (
+	"api-tester/api"
 	"api-tester/utils"
 	"encoding/json"
 	"fmt"
@@ -126,4 +127,76 @@ func SaveRequest(reqType string, route string) {
 	}
 
 	fmt.Println("Request saved successfully")
+}
+
+func PerformSavedRequest() {
+	var projectName string
+	var options []huh.Option[string]
+
+	projects := GetProjects()
+
+	for _, pName := range projects {
+		options = append(options, huh.NewOption(pName, pName))
+	}
+
+	if err := huh.NewForm(
+		huh.NewGroup(
+			huh.NewSelect[string]().
+				Title("Select project:").
+				Options(options...).
+				Value(&projectName),
+		),
+	).Run(); err != nil {
+		log.Fatal(err)
+	}
+
+	folderPath := "data/projects"
+	filePath := filepath.Join(folderPath, projectName+".json")
+
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		log.Fatal("Error reading file", err)
+	}
+
+	var project Project
+	var requestOptions []huh.Option[int]
+	var requestIndex int
+
+	err = json.Unmarshal(data, &project)
+	if err != nil {
+		log.Fatal("Error Unmarshalling JSON", err)
+	}
+
+	for index, request := range project.Requests {
+		requestOption := fmt.Sprintf("%s %s", request.ReqType, request.Route)
+		requestOptions = append(requestOptions, huh.NewOption(requestOption, index))
+	}
+
+	if err := huh.NewForm(
+		huh.NewGroup(
+			huh.NewSelect[int]().
+				Title("Select request to perform:\nProject: " + projectName + "\nBase URL: " + project.BaseUrl).
+				Options(requestOptions...).
+				Value(&requestIndex),
+		),
+	).Run(); err != nil {
+		log.Fatal(err)
+	}
+
+	selectedRequest := project.Requests[requestIndex]
+	completeUrl := project.BaseUrl + selectedRequest.Route
+
+	switch selectedRequest.ReqType {
+	case "GET":
+		api.Get(completeUrl)
+
+	case "POST":
+		api.Post(completeUrl)
+
+	case "PUT":
+		api.Put(completeUrl)
+
+	case "DELETE":
+		api.Delete(completeUrl)
+	}
 }

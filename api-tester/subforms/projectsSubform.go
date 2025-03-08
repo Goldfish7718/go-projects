@@ -17,6 +17,7 @@ func ProjectSubform() {
 				Options(
 					huh.NewOption("Create new Project", "new"),
 					huh.NewOption("View Projects", "view"),
+					huh.NewOption("Perform saved request", "req"),
 				).
 				Value(&action),
 		),
@@ -30,5 +31,8 @@ func ProjectSubform() {
 
 	case "view":
 		projects.View()
+
+	case "req":
+		projects.PerformSavedRequest()
 	}
 }
