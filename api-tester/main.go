@@ -37,6 +37,7 @@ func main() {
 			subforms.ProjectSubform()
 
 		case "exit":
+			fmt.Println("Bye!")
 			return
 		}
 	}

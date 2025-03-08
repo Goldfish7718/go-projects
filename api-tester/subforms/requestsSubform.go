@@ -1,6 +1,7 @@
 package subforms
 
 import (
+	"api-tester/api"
 	"api-tester/projects"
 	"api-tester/utils"
 	"log"
@@ -39,16 +40,16 @@ func RequestSubform() {
 
 	switch requestType {
 	case "GET":
-		utils.Get(completeUrl)
+		api.Get(completeUrl)
 
 	case "POST":
-		utils.Post(completeUrl)
+		api.Post(completeUrl)
 
 	case "PUT":
-		utils.Put(completeUrl)
+		api.Put(completeUrl)
 
 	case "DELETE":
-		utils.Delete(completeUrl)
+		api.Delete(completeUrl)
 	}
 
 	if err := huh.NewForm(
@@ -65,31 +66,5 @@ func RequestSubform() {
 
 	if save {
 		projects.SaveRequest(requestType, route)
-	}
-}
-
-func ProjectSubform() {
-	var action string
-
-	if err := huh.NewForm(
-		huh.NewGroup(
-			huh.NewSelect[string]().
-				Title("Select Request type").
-				Options(
-					huh.NewOption("Create new Project", "new"),
-					huh.NewOption("View Projects", "view"),
-				).
-				Value(&action),
-		),
-	).Run(); err != nil {
-		log.Fatal(err)
-	}
-
-	switch action {
-	case "new":
-		projects.New()
-
-	case "view":
-		projects.View()
 	}
 }

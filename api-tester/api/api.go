@@ -1,6 +1,7 @@
-package utils
+package api
 
 import (
+	"api-tester/utils"
 	"bytes"
 	"fmt"
 	"io"
@@ -66,7 +67,7 @@ func Post(url string) {
 	}
 
 	if addBody == "y" {
-		reqBody = AcceptRequestBody()
+		reqBody = utils.AcceptRequestBody()
 	}
 
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
@@ -80,7 +81,7 @@ func Post(url string) {
 	}
 	defer resp.Body.Close()
 
-	body := ParseResponseBody(resp)
+	body := utils.ParseResponseBody(resp)
 
 	fmt.Println("Response Status:", resp.Status)
 	fmt.Println("Response\n", string(body))
@@ -105,7 +106,7 @@ func Put(url string) {
 	}
 
 	if addBody == "y" {
-		reqBody = AcceptRequestBody()
+		reqBody = utils.AcceptRequestBody()
 	}
 
 	req, err := http.NewRequest("PUT", url, reqBody)
@@ -129,7 +130,7 @@ func Put(url string) {
 	}
 	defer resp.Body.Close()
 
-	body := ParseResponseBody(resp)
+	body := utils.ParseResponseBody(resp)
 
 	fmt.Println("Response Status:", resp.Status)
 	fmt.Println("Response\n", string(body))
@@ -157,7 +158,7 @@ func Delete(url string) {
 
 	defer resp.Body.Close()
 
-	body := ParseResponseBody(resp)
+	body := utils.ParseResponseBody(resp)
 
 	// Print response
 	fmt.Println("Response Status:", resp.Status)
