@@ -8,28 +8,10 @@ import (
 	"github.com/charmbracelet/huh"
 )
 
-func getBaseUrl() string {
-	var baseUrl string = "http://localhost:3000"
-
-	if err := huh.NewForm(
-		huh.NewGroup(
-			huh.NewInput().
-				Title("Enter your base URL:").
-				Value(&baseUrl),
-		),
-	).Run(); err != nil {
-		log.Fatal(err)
-	}
-
-	return baseUrl
-}
-
 func main() {
 	var choice string
 
 	fmt.Println("Welcome to API tester!")
-
-	baseUrl := getBaseUrl()
 
 	for {
 		if err := huh.NewForm(
@@ -37,8 +19,8 @@ func main() {
 				huh.NewSelect[string]().
 					Title("Select an action").
 					Options(
-						huh.NewOption("Make a new request", "new"),
-						huh.NewOption("Set base url", "baseUrl"),
+						huh.NewOption("Make a new request", "newRequest"),
+						huh.NewOption("Manage Projects", "manageProject"),
 						huh.NewOption("Exit", "exit"),
 					).
 					Value(&choice),
@@ -48,11 +30,11 @@ func main() {
 		}
 
 		switch choice {
-		case "new":
-			subforms.RequestSubform(baseUrl)
+		case "newRequest":
+			subforms.RequestSubform()
 
-		case "baseUrl":
-			baseUrl = getBaseUrl()
+		case "manageProject":
+			subforms.ProjectSubform()
 
 		case "exit":
 			return

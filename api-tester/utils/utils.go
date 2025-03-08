@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/charmbracelet/huh"
 	"github.com/chzyer/readline"
 )
 
@@ -49,4 +50,20 @@ func ParseResponseBody(resp *http.Response) string {
 	}
 
 	return string(body)
+}
+
+func GetBaseUrl() string {
+	var baseUrl string = "http://localhost:3000"
+
+	if err := huh.NewForm(
+		huh.NewGroup(
+			huh.NewInput().
+				Title("Enter your base URL:").
+				Value(&baseUrl),
+		),
+	).Run(); err != nil {
+		log.Fatal(err)
+	}
+
+	return baseUrl
 }
