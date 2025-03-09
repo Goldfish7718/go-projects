@@ -32,6 +32,7 @@ func main() {
 						huh.NewOption("Make a new request", "new_request"),
 						huh.NewOption("Set Environment", "set_env"),
 						huh.NewOption("Perform saved request", "perform_saved"),
+						huh.NewOption("Manage Projects", "manage_proj"),
 						huh.NewOption("Exit", "exit"),
 					).
 					Value(&choice),
@@ -49,6 +50,9 @@ func main() {
 
 		case "perform_saved":
 			projects.PerformSavedRequest()
+
+		case "manage_proj":
+			subforms.ProjectSubform()
 
 		case "exit":
 			fmt.Println("Bye!")

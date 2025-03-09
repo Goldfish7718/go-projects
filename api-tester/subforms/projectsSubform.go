@@ -31,5 +31,8 @@ func ProjectSubform() {
 
 	case "view":
 		projects.View()
+
+	case "delete":
+		projects.Delete()
 	}
 }

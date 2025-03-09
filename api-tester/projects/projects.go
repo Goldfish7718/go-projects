@@ -87,6 +87,43 @@ func View() {
 	}
 }
 
+func Delete() {
+	var projectToDelete string
+	var projectDeleteConfirm bool
+	projectOptions := GetProjectsOptions()
+
+	if err := huh.NewForm(
+		huh.NewGroup(
+			huh.NewSelect[string]().
+				Title("Select project to delete:").
+				Options(projectOptions...).
+				Value(&projectToDelete),
+
+			huh.NewConfirm().
+				Title("Are you sure you want to delete this project?").
+				Affirmative("Yes").
+				Negative("No").
+				Value(&projectDeleteConfirm),
+		),
+	).Run(); err != nil {
+		log.Fatal(err)
+	}
+
+	if !projectDeleteConfirm {
+		return
+	}
+
+	folderPath := "data/projects"
+	filepath := filepath.Join(folderPath, projectToDelete+".json")
+
+	err := os.Remove(filepath)
+	if err != nil {
+		log.Fatal("Error deleting file", err)
+	}
+
+	fmt.Printf("\nProject %s deleted succesfully", projectToDelete)
+}
+
 func SaveRequest(reqType string, route string) {
 	var projectName string
 
