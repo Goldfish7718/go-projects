@@ -4,10 +4,12 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	"github.com/charmbracelet/huh"
 )
 
-func GetProjects() []string {
-	var projects []string
+func GetProjectsOptions() []huh.Option[string] {
+	var projectOptions []huh.Option[string]
 
 	folderPath := "data/projects"
 
@@ -18,8 +20,8 @@ func GetProjects() []string {
 
 	for _, file := range files {
 		projectName := strings.TrimSuffix(file.Name(), ".json")
-		projects = append(projects, projectName)
+		projectOptions = append(projectOptions, huh.NewOption(projectName, projectName))
 	}
 
-	return projects
+	return projectOptions
 }

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"api-tester/environment"
+	"api-tester/projects"
 	"api-tester/subforms"
 	"fmt"
 	"log"
@@ -10,17 +12,26 @@ import (
 
 func main() {
 	var choice string
+	var selectActionString string
 
 	fmt.Println("Welcome to API tester!")
 
 	for {
+		environmentInfo := environment.GetEnvironmentInfo()
+		if environmentInfo != "" {
+			selectActionString = fmt.Sprintf("(%s) Select an action:", environmentInfo)
+		} else {
+			selectActionString = "Select an action:"
+		}
+
 		if err := huh.NewForm(
 			huh.NewGroup(
 				huh.NewSelect[string]().
-					Title("Select an action").
+					Title(selectActionString).
 					Options(
-						huh.NewOption("Make a new request", "newRequest"),
-						huh.NewOption("Manage Projects", "manageProject"),
+						huh.NewOption("Make a new request", "new_request"),
+						huh.NewOption("Set Environment", "set_env"),
+						huh.NewOption("Perform saved request", "perform_saved"),
 						huh.NewOption("Exit", "exit"),
 					).
 					Value(&choice),
@@ -30,11 +41,14 @@ func main() {
 		}
 
 		switch choice {
-		case "newRequest":
+		case "new_request":
 			subforms.RequestSubform()
 
-		case "manageProject":
-			subforms.ProjectSubform()
+		case "set_env":
+			environment.SetEnvironmentInfo()
+
+		case "perform_saved":
+			projects.PerformSavedRequest()
 
 		case "exit":
 			fmt.Println("Bye!")

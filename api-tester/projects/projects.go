@@ -2,12 +2,14 @@ package projects
 
 import (
 	"api-tester/api"
+	"api-tester/environment"
 	"api-tester/utils"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/charmbracelet/huh"
 )
@@ -66,7 +68,19 @@ func New() {
 }
 
 func View() {
-	projects := GetProjects()
+	var projects []string
+
+	folderPath := "data/projects"
+
+	files, err := os.ReadDir(folderPath)
+	if err != nil {
+		log.Fatal("Error reading directory", folderPath)
+	}
+
+	for _, file := range files {
+		projectName := strings.TrimSuffix(file.Name(), ".json")
+		projects = append(projects, projectName)
+	}
 
 	for index, projectName := range projects {
 		fmt.Printf("\n%d. %s\n", index+1, projectName)
@@ -75,13 +89,8 @@ func View() {
 
 func SaveRequest(reqType string, route string) {
 	var projectName string
-	var options []huh.Option[string]
 
-	projects := GetProjects()
-
-	for _, pName := range projects {
-		options = append(options, huh.NewOption(pName, pName))
-	}
+	options := GetProjectsOptions()
 
 	if err := huh.NewForm(
 		huh.NewGroup(
@@ -130,24 +139,10 @@ func SaveRequest(reqType string, route string) {
 }
 
 func PerformSavedRequest() {
-	var projectName string
-	var options []huh.Option[string]
-
-	projects := GetProjects()
-
-	for _, pName := range projects {
-		options = append(options, huh.NewOption(pName, pName))
-	}
-
-	if err := huh.NewForm(
-		huh.NewGroup(
-			huh.NewSelect[string]().
-				Title("Select project:").
-				Options(options...).
-				Value(&projectName),
-		),
-	).Run(); err != nil {
-		log.Fatal(err)
+	projectName := environment.GetEnvironmentInfo()
+	if projectName == "" {
+		fmt.Println("No environment selected!")
+		return
 	}
 
 	folderPath := "data/projects"
