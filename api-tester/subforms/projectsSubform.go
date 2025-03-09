@@ -17,6 +17,7 @@ func ProjectSubform() {
 				Options(
 					huh.NewOption("Create new Project", "new"),
 					huh.NewOption("View Projects", "view"),
+					huh.NewOption("Edit Projects", "edit"),
 					huh.NewOption("Delete Project", "delete"),
 				).
 				Value(&action),
@@ -31,6 +32,9 @@ func ProjectSubform() {
 
 	case "view":
 		projects.View()
+
+	case "edit":
+		projects.Edit()
 
 	case "delete":
 		projects.Delete()
