@@ -1,0 +1,18 @@
+{
+  "projectName": "gin-test",
+  "baseUrl": "http://localhost:8080",
+  "requests": [
+    {
+      "type": "GET",
+      "route": "/"
+    },
+    {
+      "type": "GET",
+      "route": "/param/tejas"
+    },
+    {
+      "type": "POST",
+      "route": "/json"
+    }
+  ]
+}
