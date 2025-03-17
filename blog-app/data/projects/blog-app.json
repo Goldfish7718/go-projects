@@ -1,0 +1,14 @@
+{
+  "projectName": "blog-app",
+  "baseUrl": "http://localhost:3000",
+  "requests": [
+    {
+      "type": "POST",
+      "route": "/blogs"
+    },
+    {
+      "type": "GET",
+      "route": "/blogs"
+    }
+  ]
+}
